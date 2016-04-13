@@ -5,66 +5,56 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.wobot</groupId>
-    <artifactId>spark-play</artifactId>
+    <artifactId>wobot-etl</artifactId>
     <version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	<name>spark-play</name>
-	<url>http://maven.apache.org</url>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.source>1.8</project.build.source>
+        <project.build.target>1.8</project.build.target>
+        <spark.version>1.4.1</spark.version>
+        <elasticsearch.version>2.1.1</elasticsearch.version>
+        <elasticsearch-hadoop.version>2.2.0</elasticsearch-hadoop.version>
+        <hbase.version>1.1.2</hbase.version>
+    </properties>
     <dependencies>
-        <!--<dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>-->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.9.3</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.10</artifactId>
-            <version>1.6.0</version>
+            <version>${spark.version}</version>
+            <!-- <scope>provided</scope>-->
         </dependency>
-        <dependency>
-            <groupId>org.mongodb.mongo-hadoop</groupId>
-            <artifactId>mongo-hadoop-core</artifactId>
-            <version>1.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb.mongo-hadoop</groupId>
-            <artifactId>mongo-hadoop-spark</artifactId>
-            <version>1.5.2</version>
-        </dependency>
+
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch-hadoop</artifactId>
-            <version>2.2.0</version>
+            <version>${elasticsearch-hadoop.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-client</artifactId>
-            <version>1.1.4</version>
+            <version>${hbase.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-common</artifactId>
-            <version>1.1.4</version>
+            <version>${hbase.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-server</artifactId>
-            <version>1.1.4</version>
+            <version>${hbase.version}</version>
         </dependency>
-
-
-
-
 
     </dependencies>
 
@@ -72,36 +62,37 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.6</version>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
                 <configuration>
-                    <outputDirectory>lib</outputDirectory>
-					<finalName>spark-play</finalName>
+                    <source>${project.build.source}</source>
+                    <target>${project.build.target}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <outputDirectory>lib</outputDirectory>
+                    <finalName>${project.artifactId}</finalName>
                 </configuration>
             </plugin>
-             <plugin>
-                 <artifactId>maven-dependency-plugin</artifactId>
-                 <executions>
-                     <execution>
-                         <phase>package</phase>
-                         <goals>
-                             <goal>copy-dependencies</goal>
-                         </goals>
-                         <configuration>
-                             <outputDirectory>lib</outputDirectory>
-                         </configuration>
-                     </execution>
-                 </executions>
-             </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

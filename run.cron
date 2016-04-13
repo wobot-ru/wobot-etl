@@ -1,0 +1,6 @@
+SHELL=/bin/bash
+HOME=/home/spark/migrate
+TZ="Europe/Moscow"
+# MAILTO=rsng@mail.ru
+# 33 15 * * * export JAVA_HOME=/usr/jdk64/jdk1.8.0_66;export SPARK_HOME=/usr/hdp/current/spark-client;export HADOOP_CONF_DIR=/etc/hadoop/conf; /home/spark/migrate/run.sh > run.log 2>&1
+10 23 * * * ./run.sh > run.log 2>&1
