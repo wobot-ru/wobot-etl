@@ -26,7 +26,7 @@ import static java.util.Arrays.stream;
 
 public class EsOld2NewSchema {
 
-    public static void main(String[] args) throws UnknownHostException {
+    public static void main(String[] args) {
 
         Properties properties = loadProperties();
         String[] nodes = properties.getProperty("es.nodes", "91.210.104.84").split(",");
@@ -82,9 +82,9 @@ public class EsOld2NewSchema {
         EsWriter writer = new EsWriter(nodes, cluster, destIndex, bulkSize);
         merged.foreachPartition(documents -> writer.Write(documents));
 
-        System.out.println("----------------partitions----------------------");
-        System.out.println(merged.partitions().size());
-        System.out.println("-----------------complete----------------------");
+        println("----------------partitions----------------------");
+        println(merged.partitions().size());
+        println("-----------------complete----------------------");
 
         sc.stop();
 
