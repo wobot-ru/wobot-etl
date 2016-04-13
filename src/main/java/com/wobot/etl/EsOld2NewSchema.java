@@ -5,7 +5,6 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -28,7 +27,8 @@ public class EsOld2NewSchema {
 
     public static void main(String[] args) {
 
-        Properties properties = loadProperties();
+        String confFile = args.length > 0 ? args[0] : "./conf.properties";
+        Properties properties = loadProperties(confFile);
         String[] nodes = properties.getProperty("es.nodes", "91.210.104.84").split(",");
         String cluster = properties.getProperty("es.cluster", "wobot-cluster");
         String sourceIndex = properties.getProperty("es.source", "wobot_fb");
@@ -90,11 +90,11 @@ public class EsOld2NewSchema {
 
     }
 
-    private static Properties loadProperties() {
+    private static Properties loadProperties(String fileName) {
         Properties props = new Properties();
 
         try {
-            props.load(new FileInputStream("./conf.properties"));
+            props.load(new FileInputStream(fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,7 +103,7 @@ public class EsOld2NewSchema {
         return props;
     }
 
-    static <T> void println(T arg) {
+    private static <T> void println(T arg) {
         System.out.println(arg);
     }
 
