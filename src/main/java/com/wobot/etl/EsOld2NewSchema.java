@@ -35,6 +35,7 @@ public class EsOld2NewSchema {
         String destIndex = properties.getProperty("es.destination", "wobot33");
         Integer bulkSize = Integer.valueOf(properties.getProperty("es.bulkSize", "5000"));
         Integer numPartitions = Integer.valueOf(properties.getProperty("spark.partitions", "5"));
+        String filter = properties.getProperty("es.filter", null);
 
         SparkConf conf = new SparkConf();
 
@@ -55,7 +56,16 @@ public class EsOld2NewSchema {
 
         JavaSparkContext sc = new JavaSparkContext(conf);
 
-        JavaPairRDD<String, Map<String, Object>> postRDD = JavaEsSpark.esRDD(sc, sourceIndex + "/post", "?q=post_date:[now-12M/d TO now]");
+        //JavaPairRDD<String, Map<String, Object>> postRDD = JavaEsSpark.esRDD(sc, sourceIndex + "/post", "?q=post_date:[now-12M/d TO now]");
+
+        JavaPairRDD<String, Map<String, Object>> postRDD;
+        if (filter == null || filter.isEmpty()){
+            postRDD = JavaEsSpark.esRDD(sc, sourceIndex + "/post");
+        }
+        else{
+            postRDD = JavaEsSpark.esRDD(sc, sourceIndex + "/post", "?q="+filter);
+        }
+
 
         JavaPairRDD<String, Map<String, Object>> profileRDD = JavaEsSpark.esRDD(sc, sourceIndex + "/profile")
                 .partitionBy(partitioner);
